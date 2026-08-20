@@ -1,0 +1,41 @@
+name: CI 4 - Build completo del sistema
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-completo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Compilar backend
+        working-directory: ./backend
+        run: mvn -B clean package -DskipTests
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependencias del frontend
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Compilar frontend
+        working-directory: ./frontend
+        run: npm run build -- --configuration production
+
+      - name: Build completo exitoso
+        run: echo "Backend y frontend compilados correctamente"

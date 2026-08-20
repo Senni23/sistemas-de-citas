@@ -1,0 +1,69 @@
+<h3 class="mb-4">Citas</h3>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5>Agendar cita</h5>
+        <div class="mb-2">
+          <label class="form-label">Paciente</label>
+          <select class="form-select" [(ngModel)]="formulario.pacienteId" name="pacienteId">
+            <option [ngValue]="undefined" disabled>Seleccione...</option>
+            <option *ngFor="let p of pacientes" [ngValue]="p.id">{{ p.nombres }} {{ p.apellidos }}</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Medico</label>
+          <select class="form-select" [(ngModel)]="formulario.medicoId" name="medicoId">
+            <option [ngValue]="undefined" disabled>Seleccione...</option>
+            <option *ngFor="let m of medicos" [ngValue]="m.id">{{ m.nombres }} {{ m.apellidos }} - {{ m.especialidad?.nombre }}</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Fecha</label>
+          <input type="date" class="form-control" [(ngModel)]="formulario.fecha" name="fecha" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Hora</label>
+          <input type="time" class="form-control" [(ngModel)]="formulario.hora" name="hora" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Motivo</label>
+          <textarea class="form-control" [(ngModel)]="formulario.motivo" name="motivo"></textarea>
+        </div>
+        <button class="btn btn-primary" (click)="agendar()">Agendar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <table class="table table-striped bg-white">
+      <thead>
+        <tr>
+          <th>Paciente</th>
+          <th>Medico</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of citas">
+          <td>{{ c.paciente?.nombres }} {{ c.paciente?.apellidos }}</td>
+          <td>{{ c.medico?.nombres }} {{ c.medico?.apellidos }}</td>
+          <td>{{ c.fecha }}</td>
+          <td>{{ c.hora }}</td>
+          <td>
+            <select class="form-select form-select-sm" [ngModel]="c.estado" (ngModelChange)="cambiarEstado(c, $event)">
+              <option *ngFor="let estado of estados" [ngValue]="estado">{{ estado }}</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline-danger" (click)="eliminar(c.id!)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

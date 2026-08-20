@@ -1,0 +1,67 @@
+<h3 class="mb-4">Pacientes</h3>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5>{{ editando ? 'Editar' : 'Nuevo' }} paciente</h5>
+        <div class="mb-2">
+          <label class="form-label">Nombres</label>
+          <input class="form-control" [(ngModel)]="formulario.nombres" name="nombres" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Apellidos</label>
+          <input class="form-control" [(ngModel)]="formulario.apellidos" name="apellidos" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">DNI</label>
+          <input class="form-control" [(ngModel)]="formulario.dni" name="dni" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Fecha de nacimiento</label>
+          <input type="date" class="form-control" [(ngModel)]="formulario.fechaNacimiento" name="fechaNacimiento" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Telefono</label>
+          <input class="form-control" [(ngModel)]="formulario.telefono" name="telefono" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Email</label>
+          <input class="form-control" [(ngModel)]="formulario.email" name="email" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Direccion</label>
+          <input class="form-control" [(ngModel)]="formulario.direccion" name="direccion" />
+        </div>
+        <button class="btn btn-primary me-2" (click)="guardar()">Guardar</button>
+        <button class="btn btn-secondary" (click)="cancelar()" *ngIf="editando">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <table class="table table-striped bg-white">
+      <thead>
+        <tr>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>DNI</th>
+          <th>Telefono</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of pacientes">
+          <td>{{ p.nombres }}</td>
+          <td>{{ p.apellidos }}</td>
+          <td>{{ p.dni }}</td>
+          <td>{{ p.telefono }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1" (click)="editar(p)">Editar</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="eliminar(p.id!)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

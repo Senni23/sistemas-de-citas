@@ -1,0 +1,36 @@
+<h3 class="mb-4">Dashboard</h3>
+
+<div class="row g-3" *ngIf="resumen">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary">
+      <div class="card-body">
+        <div class="fs-2">{{ resumen.totalPacientes }}</div>
+        <div>Pacientes registrados</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success">
+      <div class="card-body">
+        <div class="fs-2">{{ resumen.totalMedicos }}</div>
+        <div>Medicos registrados</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-info">
+      <div class="card-body">
+        <div class="fs-2">{{ resumen.totalCitas }}</div>
+        <div>Citas totales</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-warning">
+      <div class="card-body">
+        <div class="fs-2">{{ resumen.citasHoy }}</div>
+        <div>Citas de hoy</div>
+      </div>
+    </div>
+  </div>
+</div>

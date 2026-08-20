@@ -1,0 +1,22 @@
+name: CI 1 - Validar estructura del proyecto
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  validar-estructura:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Verificar carpetas principales
+        run: |
+          test -d backend || (echo "Falta la carpeta backend" && exit 1)
+          test -d frontend || (echo "Falta la carpeta frontend" && exit 1)
+          test -f backend/pom.xml || (echo "Falta backend/pom.xml" && exit 1)
+          test -f frontend/package.json || (echo "Falta frontend/package.json" && exit 1)
+          echo "Estructura del proyecto correcta"
