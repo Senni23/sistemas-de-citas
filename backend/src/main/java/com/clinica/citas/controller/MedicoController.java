@@ -1,5 +1,6 @@
 package com.clinica.citas.controller;
 
+import com.clinica.citas.dto.MedicoRegistroRequest;
 import com.clinica.citas.model.Medico;
 import com.clinica.citas.service.MedicoService;
 import jakarta.validation.Valid;
@@ -30,8 +31,8 @@ public class MedicoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Medico crear(@Valid @RequestBody Medico medico) {
-        return medicoService.crear(medico);
+    public Medico crear(@Valid @RequestBody MedicoRegistroRequest request) {
+        return medicoService.crear(request);
     }
 
     @PutMapping("/{id}")

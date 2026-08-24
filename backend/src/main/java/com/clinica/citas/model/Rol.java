@@ -2,5 +2,7 @@ package com.clinica.citas.model;
 
 public enum Rol {
     ADMIN,
-    RECEPCIONISTA
+    RECEPCIONISTA,
+    MEDICO,
+    PACIENTE
 }

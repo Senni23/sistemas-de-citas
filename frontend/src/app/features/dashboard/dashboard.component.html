@@ -1,36 +1,32 @@
-<h3 class="mb-4">Dashboard</h3>
+<h3 class="mb-4 text-gradient">Dashboard</h3>
 
 <div class="row g-3" *ngIf="resumen">
   <div class="col-md-3">
-    <div class="card text-white bg-primary">
-      <div class="card-body">
-        <div class="fs-2">{{ resumen.totalPacientes }}</div>
-        <div>Pacientes registrados</div>
-      </div>
+    <div class="stat-card" style="--accent: #22d3ee;">
+      <i class="bi bi-people stat-icon"></i>
+      <div class="stat-value">{{ resumen.totalPacientes }}</div>
+      <div class="stat-label">Pacientes registrados</div>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="card text-white bg-success">
-      <div class="card-body">
-        <div class="fs-2">{{ resumen.totalMedicos }}</div>
-        <div>Medicos registrados</div>
-      </div>
+    <div class="stat-card" style="--accent: #34d399;">
+      <i class="bi bi-heart-pulse stat-icon"></i>
+      <div class="stat-value">{{ resumen.totalMedicos }}</div>
+      <div class="stat-label">Medicos registrados</div>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="card text-white bg-info">
-      <div class="card-body">
-        <div class="fs-2">{{ resumen.totalCitas }}</div>
-        <div>Citas totales</div>
-      </div>
+    <div class="stat-card" style="--accent: #a855f7;">
+      <i class="bi bi-calendar2-check stat-icon"></i>
+      <div class="stat-value">{{ resumen.totalCitas }}</div>
+      <div class="stat-label">Citas totales</div>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="card text-white bg-warning">
-      <div class="card-body">
-        <div class="fs-2">{{ resumen.citasHoy }}</div>
-        <div>Citas de hoy</div>
-      </div>
+    <div class="stat-card" style="--accent: #fbbf24;">
+      <i class="bi bi-clock-history stat-icon"></i>
+      <div class="stat-value">{{ resumen.citasHoy }}</div>
+      <div class="stat-label">Citas de hoy</div>
     </div>
   </div>
 </div>

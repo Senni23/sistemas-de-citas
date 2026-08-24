@@ -1,0 +1,51 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0 text-gradient">Mis citas</h3>
+  <a routerLink="/agendar" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Agendar nueva cita</a>
+</div>
+
+<div *ngIf="cargando" class="text-secondary">Cargando tus citas...</div>
+
+<div *ngIf="!cargando && citas.length === 0" class="card p-5 text-center">
+  <div style="font-size: 2.5rem; color: var(--text-dim);" class="mb-2"><i class="bi bi-calendar-x"></i></div>
+  <p class="text-secondary mb-3">Todavia no tienes ninguna cita agendada.</p>
+  <a routerLink="/agendar" class="btn btn-primary mx-auto" style="width: fit-content;">Agendar mi primera cita</a>
+</div>
+
+<div class="row g-3" *ngIf="!cargando && citas.length > 0">
+  <div class="col-md-6" *ngFor="let c of citas">
+    <div class="card p-3">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <div style="font-weight: 600;">{{ c.servicio?.nombre ?? c.medico?.especialidad?.nombre }}</div>
+          <div class="text-secondary" style="font-size: 0.85rem;">
+            Atendido por {{ c.medico?.nombres }} {{ c.medico?.apellidos }}
+          </div>
+        </div>
+        <span class="badge" [ngClass]="claseEstado(c.estado)" style="font-size: 0.75rem;">{{ c.estado }}</span>
+      </div>
+      <hr style="border-color: var(--border);" />
+      <div class="d-flex align-items-center gap-2 text-secondary" style="font-size: 0.85rem;">
+        <i class="bi bi-calendar2"></i>{{ c.fecha }}
+        <i class="bi bi-clock ms-2"></i>{{ c.hora }}
+      </div>
+      <div *ngIf="c.motivo" class="text-secondary mt-1" style="font-size: 0.82rem;">{{ c.motivo }}</div>
+
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <span style="font-weight: 600;" *ngIf="c.montoPagado != null">S/ {{ c.montoPagado }}</span>
+        <span *ngIf="c.pagado" class="badge text-success"><i class="bi bi-check-circle me-1"></i>Pagado</span>
+        <button class="btn btn-outline-primary btn-sm" *ngIf="!c.pagado && c.estado !== 'CANCELADA'" (click)="completarPago(c)">
+          Completar pago
+        </button>
+      </div>
+
+      <button
+        class="btn btn-outline-danger btn-sm mt-2"
+        style="width: fit-content;"
+        *ngIf="puedeCancelar(c)"
+        (click)="cancelar(c)"
+      >
+        <i class="bi bi-x-circle me-1"></i>Cancelar cita
+      </button>
+    </div>
+  </div>
+</div>

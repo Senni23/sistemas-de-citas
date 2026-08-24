@@ -1,0 +1,65 @@
+<div class="auth-shell py-5">
+  <div class="card auth-card shadow-sm" style="width: 460px;">
+    <div class="card-body p-4">
+      <div class="text-center mb-4">
+        <div class="mb-2" style="font-size: 2.2rem;"><i class="bi bi-person-plus text-gradient"></i></div>
+        <h4 class="card-title mb-1 text-gradient">Crea tu cuenta de paciente</h4>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Para agendar tus citas en la clinica</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombres</label>
+          <input class="form-control" [(ngModel)]="formulario.nombres" name="nombres" />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Apellidos</label>
+          <input class="form-control" [(ngModel)]="formulario.apellidos" name="apellidos" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">DNI</label>
+          <input class="form-control" [(ngModel)]="formulario.dni" name="dni" maxlength="15" />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Telefono</label>
+          <input class="form-control" [(ngModel)]="formulario.telefono" name="telefono" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="bi bi-envelope me-1"></i>Correo (sera tu usuario)</label>
+        <input type="email" class="form-control" [(ngModel)]="formulario.email" name="email" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Direccion</label>
+        <input class="form-control" [(ngModel)]="formulario.direccion" name="direccion" />
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label"><i class="bi bi-shield-lock me-1"></i>Contrasena</label>
+          <input type="password" class="form-control" [(ngModel)]="formulario.password" name="password" placeholder="Minimo 6 caracteres" />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Confirmar contrasena</label>
+          <input type="password" class="form-control" [(ngModel)]="formulario.confirmarPassword" name="confirmarPassword" />
+        </div>
+      </div>
+
+      <div class="alert alert-danger py-1" *ngIf="error">{{ error }}</div>
+
+      <button class="btn btn-primary w-100" (click)="registrar()" [disabled]="cargando">
+        <i class="bi bi-check-circle me-1"></i>{{ cargando ? 'Creando cuenta...' : 'Crear mi cuenta' }}
+      </button>
+
+      <p class="text-center mt-3 mb-0" style="font-size: 0.9rem;">
+        ¿Ya tienes cuenta?
+        <a routerLink="/login" class="text-gradient" style="cursor: pointer; text-decoration: none; font-weight: 600;">Inicia sesion</a>
+      </p>
+    </div>
+  </div>
+</div>

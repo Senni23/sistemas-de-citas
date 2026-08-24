@@ -1,4 +1,4 @@
-<h3 class="mb-4">Medicos</h3>
+<h3 class="mb-4 text-gradient">Medicos</h3>
 
 <div class="row">
   <div class="col-md-4">
@@ -29,9 +29,14 @@
           <input class="form-control" [(ngModel)]="formulario.telefono" name="telefono" />
         </div>
         <div class="mb-2">
-          <label class="form-label">Email</label>
+          <label class="form-label">Email (sera su usuario para iniciar sesion)</label>
           <input class="form-control" [(ngModel)]="formulario.email" name="email" />
         </div>
+        <div class="mb-2" *ngIf="!editando">
+          <label class="form-label">Contrasena inicial</label>
+          <input type="password" class="form-control" [(ngModel)]="formulario.password" name="password" placeholder="Minimo 6 caracteres" />
+        </div>
+        <div class="alert alert-danger py-1" *ngIf="error">{{ error }}</div>
         <button class="btn btn-primary me-2" (click)="guardar()">Guardar</button>
         <button class="btn btn-secondary" (click)="cancelar()" *ngIf="editando">Cancelar</button>
       </div>

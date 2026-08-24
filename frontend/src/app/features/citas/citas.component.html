@@ -1,4 +1,4 @@
-<h3 class="mb-4">Citas</h3>
+<h3 class="mb-4 text-gradient">Citas</h3>
 
 <div class="row">
   <div class="col-md-4">
@@ -42,8 +42,10 @@
         <tr>
           <th>Paciente</th>
           <th>Medico</th>
+          <th>Servicio</th>
           <th>Fecha</th>
           <th>Hora</th>
+          <th>Pago</th>
           <th>Estado</th>
           <th></th>
         </tr>
@@ -52,8 +54,13 @@
         <tr *ngFor="let c of citas">
           <td>{{ c.paciente?.nombres }} {{ c.paciente?.apellidos }}</td>
           <td>{{ c.medico?.nombres }} {{ c.medico?.apellidos }}</td>
+          <td>{{ c.servicio?.nombre ?? '-' }}</td>
           <td>{{ c.fecha }}</td>
           <td>{{ c.hora }}</td>
+          <td>
+            <span *ngIf="c.pagado" class="badge text-success">S/ {{ c.montoPagado }}</span>
+            <span *ngIf="!c.pagado" class="text-secondary" style="font-size: 0.8rem;">Sin pagar</span>
+          </td>
           <td>
             <select class="form-select form-select-sm" [ngModel]="c.estado" (ngModelChange)="cambiarEstado(c, $event)">
               <option *ngFor="let estado of estados" [ngValue]="estado">{{ estado }}</option>

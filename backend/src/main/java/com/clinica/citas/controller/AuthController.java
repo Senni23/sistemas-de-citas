@@ -1,16 +1,16 @@
 package com.clinica.citas.controller;
 
-import com.clinica.citas.model.Usuario;
+import com.clinica.citas.dto.AuthResponse;
+import com.clinica.citas.dto.LoginRequest;
+import com.clinica.citas.dto.RegistroPacienteRequest;
 import com.clinica.citas.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,17 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
-        Optional<Usuario> usuario = authService.login(body.get("username"), body.get("password"));
-        if (usuario.isPresent()) {
-            Usuario u = usuario.get();
-            return ResponseEntity.ok(Map.of(
-                    "id", u.getId(),
-                    "username", u.getUsername(),
-                    "rol", u.getRol().name()
-            ));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("mensaje", "Usuario o contrasena incorrectos"));
+    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
+        return authService.login(request);
+    }
+
+    @PostMapping("/registro")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthResponse registro(@Valid @RequestBody RegistroPacienteRequest request) {
+        return authService.registrarPaciente(request);
     }
 }

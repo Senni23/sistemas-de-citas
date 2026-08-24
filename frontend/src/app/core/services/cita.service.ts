@@ -14,6 +14,14 @@ export class CitaService {
     return this.http.get<Cita[]>(this.baseUrl);
   }
 
+  listarPorPaciente(pacienteId: number): Observable<Cita[]> {
+    return this.http.get<Cita[]>(`${this.baseUrl}/paciente/${pacienteId}`);
+  }
+
+  listarPorMedico(medicoId: number): Observable<Cita[]> {
+    return this.http.get<Cita[]>(`${this.baseUrl}/medico/${medicoId}`);
+  }
+
   obtener(id: number): Observable<Cita> {
     return this.http.get<Cita>(`${this.baseUrl}/${id}`);
   }
@@ -28,6 +36,10 @@ export class CitaService {
 
   cambiarEstado(id: number, estado: EstadoCita): Observable<Cita> {
     return this.http.patch<Cita>(`${this.baseUrl}/${id}/estado`, { estado });
+  }
+
+  pagar(id: number, metodoPago: string): Observable<Cita> {
+    return this.http.post<Cita>(`${this.baseUrl}/${id}/pagar`, { metodoPago });
   }
 
   eliminar(id: number): Observable<void> {

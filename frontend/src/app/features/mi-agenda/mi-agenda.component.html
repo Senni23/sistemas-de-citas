@@ -1,0 +1,48 @@
+<h3 class="mb-1 text-gradient">Mi agenda</h3>
+<p class="text-secondary mb-4" *ngIf="nombreMedico">{{ nombreMedico }}</p>
+
+<div *ngIf="cargando" class="text-secondary">Cargando tu agenda...</div>
+
+<div *ngIf="!cargando && grupos.length === 0" class="card p-5 text-center">
+  <div style="font-size: 2.5rem;" class="text-gradient mb-2"><i class="bi bi-calendar2-week"></i></div>
+  <p class="text-secondary mb-0">No tienes citas programadas por ahora.</p>
+</div>
+
+<div *ngFor="let grupo of grupos" class="mb-4">
+  <h6 class="mb-2" [class.text-gradient]="grupo.esHoy">
+    {{ grupo.esHoy ? 'Hoy' : '' }} {{ grupo.fecha }}
+  </h6>
+
+  <div class="row g-3">
+    <div class="col-md-6" *ngFor="let c of grupo.citas">
+      <div class="card p-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div style="font-weight: 600;">{{ c.paciente?.nombres }} {{ c.paciente?.apellidos }}</div>
+            <div class="text-secondary" style="font-size: 0.85rem;">
+              <i class="bi bi-clock me-1"></i>{{ c.hora }}
+            </div>
+            <div class="text-secondary" style="font-size: 0.8rem;" *ngIf="c.servicio">{{ c.servicio.nombre }}</div>
+          </div>
+          <div class="text-end">
+            <span class="badge d-block mb-1" [ngClass]="claseEstado(c.estado)" style="font-size: 0.75rem;">{{ c.estado }}</span>
+            <span class="badge text-success" *ngIf="c.pagado" style="font-size: 0.7rem;">Pagado</span>
+          </div>
+        </div>
+        <div *ngIf="c.motivo" class="text-secondary mt-2" style="font-size: 0.82rem;">{{ c.motivo }}</div>
+
+        <div class="d-flex gap-2 mt-3" *ngIf="c.estado !== 'ATENDIDA' && c.estado !== 'CANCELADA'">
+          <button class="btn btn-outline-primary btn-sm" *ngIf="c.estado === 'PENDIENTE'" (click)="cambiarEstado(c, 'CONFIRMADA')">
+            <i class="bi bi-check2 me-1"></i>Confirmar
+          </button>
+          <button class="btn btn-primary btn-sm" (click)="cambiarEstado(c, 'ATENDIDA')">
+            <i class="bi bi-check2-circle me-1"></i>Atendida
+          </button>
+          <button class="btn btn-outline-danger btn-sm" (click)="cambiarEstado(c, 'CANCELADA')">
+            <i class="bi bi-x-circle me-1"></i>Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

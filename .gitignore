@@ -18,3 +18,4 @@ npm-debug.log*
 
 # Entorno
 .env
+backend/src/main/resources/application-local.properties

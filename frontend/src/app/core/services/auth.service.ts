@@ -4,9 +4,21 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface SesionUsuario {
-  id: number;
+  token: string;
   username: string;
-  rol: string;
+  rol: 'ADMIN' | 'RECEPCIONISTA' | 'MEDICO' | 'PACIENTE';
+  nombre: string;
+  entidadId: number | null;
+}
+
+export interface RegistroPaciente {
+  nombres: string;
+  apellidos: string;
+  dni: string;
+  telefono: string;
+  email: string;
+  direccion: string;
+  password: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,7 +31,13 @@ export class AuthService {
   login(username: string, password: string): Observable<SesionUsuario> {
     return this.http
       .post<SesionUsuario>(`${this.baseUrl}/login`, { username, password })
-      .pipe(tap((usuario) => localStorage.setItem(this.storageKey, JSON.stringify(usuario))));
+      .pipe(tap((usuario) => this.guardarSesion(usuario)));
+  }
+
+  registrarPaciente(datos: RegistroPaciente): Observable<SesionUsuario> {
+    return this.http
+      .post<SesionUsuario>(`${this.baseUrl}/registro`, datos)
+      .pipe(tap((usuario) => this.guardarSesion(usuario)));
   }
 
   logout(): void {
@@ -31,7 +49,32 @@ export class AuthService {
     return raw ? (JSON.parse(raw) as SesionUsuario) : null;
   }
 
+  token(): string | null {
+    return this.usuarioActual()?.token ?? null;
+  }
+
   estaAutenticado(): boolean {
     return this.usuarioActual() !== null;
+  }
+
+  tieneRol(...roles: string[]): boolean {
+    const usuario = this.usuarioActual();
+    return !!usuario && roles.includes(usuario.rol);
+  }
+
+  rutaInicioSegunRol(): string {
+    const usuario = this.usuarioActual();
+    switch (usuario?.rol) {
+      case 'MEDICO':
+        return '/mi-agenda';
+      case 'PACIENTE':
+        return '/mis-citas';
+      default:
+        return '/dashboard';
+    }
+  }
+
+  private guardarSesion(usuario: SesionUsuario): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(usuario));
   }
 }

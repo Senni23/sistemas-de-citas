@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Medico } from '../models/medico.model';
+import { Medico, MedicoRegistro } from '../models/medico.model';
 
 @Injectable({ providedIn: 'root' })
 export class MedicoService {
@@ -18,7 +18,7 @@ export class MedicoService {
     return this.http.get<Medico>(`${this.baseUrl}/${id}`);
   }
 
-  crear(medico: Medico): Observable<Medico> {
+  crear(medico: MedicoRegistro): Observable<Medico> {
     return this.http.post<Medico>(this.baseUrl, medico);
   }
 

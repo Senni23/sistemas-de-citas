@@ -28,7 +28,7 @@ public class Medico {
     private String telefono;
 
     @Email
-    @Column(length = 100)
+    @Column(length = 100, unique = true)
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -12,7 +12,7 @@ public class Usuario {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true, length = 100)
     private String username;
 
     @NotBlank
@@ -22,6 +22,14 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Rol rol = Rol.RECEPCIONISTA;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medico_id")
+    private Medico medico;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "paciente_id")
+    private Paciente paciente;
 
     public Usuario() {
     }
@@ -56,5 +64,21 @@ public class Usuario {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 }

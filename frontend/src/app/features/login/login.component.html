@@ -1,24 +1,32 @@
-<div class="d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-  <div class="card shadow-sm" style="width: 350px;">
-    <div class="card-body">
-      <h4 class="card-title mb-3 text-center">Iniciar sesion</h4>
-
-      <div class="mb-3">
-        <label class="form-label">Usuario</label>
-        <input class="form-control" [(ngModel)]="username" name="username" />
+<div class="auth-shell">
+  <div class="card auth-card shadow-sm" style="width: 380px;">
+    <div class="card-body p-4">
+      <div class="text-center mb-4">
+        <div class="mb-2" style="font-size: 2.2rem;"><i class="bi bi-activity text-gradient"></i></div>
+        <h4 class="card-title mb-1 text-gradient">Sistema de Citas Medicas</h4>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Ingresa a tu panel de control</p>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Contrasena</label>
-        <input type="password" class="form-control" [(ngModel)]="password" name="password" />
+        <label class="form-label"><i class="bi bi-person me-1"></i>Usuario</label>
+        <input class="form-control" [(ngModel)]="username" name="username" placeholder="admin" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="bi bi-shield-lock me-1"></i>Contrasena</label>
+        <input type="password" class="form-control" [(ngModel)]="password" name="password" placeholder="••••••••" />
       </div>
 
       <div class="alert alert-danger py-1" *ngIf="error">{{ error }}</div>
 
-      <button class="btn btn-primary w-100" (click)="ingresar()">Ingresar</button>
+      <button class="btn btn-primary w-100" (click)="ingresar()"><i class="bi bi-box-arrow-in-right me-1"></i>Ingresar</button>
 
       <p class="text-muted mt-3 mb-0 text-center" style="font-size: 0.8rem;">
         Usuario de prueba: admin / 123456
+      </p>
+      <p class="text-center mt-3 mb-0" style="font-size: 0.9rem;">
+        ¿Eres paciente y no tienes cuenta?
+        <a routerLink="/registro" class="text-gradient" style="cursor: pointer; text-decoration: none; font-weight: 600;">Regístrate aquí</a>
       </p>
     </div>
   </div>

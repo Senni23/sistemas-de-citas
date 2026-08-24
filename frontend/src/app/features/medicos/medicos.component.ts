@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Medico } from '../../core/models/medico.model';
+import { Medico, MedicoRegistro } from '../../core/models/medico.model';
 import { Especialidad } from '../../core/models/especialidad.model';
 import { MedicoService } from '../../core/services/medico.service';
 import { EspecialidadService } from '../../core/services/especialidad.service';
@@ -15,7 +15,7 @@ import { EspecialidadService } from '../../core/services/especialidad.service';
 export class MedicosComponent implements OnInit {
   medicos: Medico[] = [];
   especialidades: Especialidad[] = [];
-  formulario: Partial<Medico> & { especialidadId?: number } = this.formularioVacio();
+  formulario: Partial<Medico> & { especialidadId?: number; password?: string } = this.formularioVacio();
   editando = false;
 
   constructor(private medicoService: MedicoService, private especialidadService: EspecialidadService) {}
@@ -29,26 +29,44 @@ export class MedicosComponent implements OnInit {
     this.medicoService.listar().subscribe((data) => (this.medicos = data));
   }
 
-  guardar(): void {
-    const medico: Medico = {
-      id: this.formulario.id,
-      nombres: this.formulario.nombres ?? '',
-      apellidos: this.formulario.apellidos ?? '',
-      colegiatura: this.formulario.colegiatura ?? '',
-      telefono: this.formulario.telefono,
-      email: this.formulario.email,
-      especialidad: { id: Number(this.formulario.especialidadId) } as Especialidad,
-    };
+  error = '';
 
-    if (this.editando && medico.id) {
-      this.medicoService.actualizar(medico.id, medico).subscribe(() => {
-        this.cargar();
-        this.cancelar();
+  guardar(): void {
+    this.error = '';
+
+    if (this.editando && this.formulario.id) {
+      const medico: Medico = {
+        id: this.formulario.id,
+        nombres: this.formulario.nombres ?? '',
+        apellidos: this.formulario.apellidos ?? '',
+        colegiatura: this.formulario.colegiatura ?? '',
+        telefono: this.formulario.telefono,
+        email: this.formulario.email,
+        especialidad: { id: Number(this.formulario.especialidadId) } as Especialidad,
+      };
+      this.medicoService.actualizar(medico.id!, medico).subscribe({
+        next: () => {
+          this.cargar();
+          this.cancelar();
+        },
+        error: (err) => (this.error = err.error?.mensaje ?? 'No se pudo guardar'),
       });
     } else {
-      this.medicoService.crear(medico).subscribe(() => {
-        this.cargar();
-        this.cancelar();
+      const registro: MedicoRegistro = {
+        nombres: this.formulario.nombres ?? '',
+        apellidos: this.formulario.apellidos ?? '',
+        colegiatura: this.formulario.colegiatura ?? '',
+        telefono: this.formulario.telefono,
+        email: this.formulario.email ?? '',
+        especialidadId: Number(this.formulario.especialidadId),
+        password: this.formulario.password ?? '',
+      };
+      this.medicoService.crear(registro).subscribe({
+        next: () => {
+          this.cargar();
+          this.cancelar();
+        },
+        error: (err) => (this.error = err.error?.mensaje ?? 'No se pudo crear el medico'),
       });
     }
   }
@@ -70,6 +88,6 @@ export class MedicosComponent implements OnInit {
   }
 
   private formularioVacio() {
-    return { nombres: '', apellidos: '', colegiatura: '', telefono: '', email: '', especialidadId: undefined };
+    return { nombres: '', apellidos: '', colegiatura: '', telefono: '', email: '', especialidadId: undefined, password: '' };
   }
 }

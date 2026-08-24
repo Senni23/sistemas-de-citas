@@ -1,19 +1,34 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
+import { adminGuard, medicoGuard, pacienteGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './features/login/login.component';
+import { RegistroComponent } from './features/registro/registro.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { PacientesComponent } from './features/pacientes/pacientes.component';
 import { MedicosComponent } from './features/medicos/medicos.component';
 import { EspecialidadesComponent } from './features/especialidades/especialidades.component';
 import { CitasComponent } from './features/citas/citas.component';
+import { AgendarComponent } from './features/agendar/agendar.component';
+import { MisCitasComponent } from './features/mis-citas/mis-citas.component';
+import { MiAgendaComponent } from './features/mi-agenda/mi-agenda.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
-  { path: 'pacientes', component: PacientesComponent, canActivate: [authGuard] },
-  { path: 'medicos', component: MedicosComponent, canActivate: [authGuard] },
-  { path: 'especialidades', component: EspecialidadesComponent, canActivate: [authGuard] },
-  { path: 'citas', component: CitasComponent, canActivate: [authGuard] },
+  { path: 'registro', component: RegistroComponent },
+
+  // Panel de administracion (personal de la clinica)
+  { path: 'dashboard', component: DashboardComponent, canActivate: [adminGuard] },
+  { path: 'pacientes', component: PacientesComponent, canActivate: [adminGuard] },
+  { path: 'medicos', component: MedicosComponent, canActivate: [adminGuard] },
+  { path: 'especialidades', component: EspecialidadesComponent, canActivate: [adminGuard] },
+  { path: 'citas', component: CitasComponent, canActivate: [adminGuard] },
+
+  // Portal del medico
+  { path: 'mi-agenda', component: MiAgendaComponent, canActivate: [medicoGuard] },
+
+  // Portal del paciente
+  { path: 'agendar', component: AgendarComponent, canActivate: [pacienteGuard] },
+  { path: 'mis-citas', component: MisCitasComponent, canActivate: [pacienteGuard] },
+
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: 'dashboard' },
 ];
