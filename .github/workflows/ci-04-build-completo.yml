@@ -2,9 +2,9 @@ name: CI 4 - Build completo del sistema
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "master"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "master"]
 
 jobs:
   build-completo:

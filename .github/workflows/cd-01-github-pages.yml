@@ -2,7 +2,7 @@ name: CD - Desplegar documentacion en GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "master"]
     paths:
       - "docs/site/**"
       - ".github/workflows/cd-01-github-pages.yml"
