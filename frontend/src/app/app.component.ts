@@ -15,6 +15,6 @@ export class AppComponent {
 
   cerrarSesion(): void {
     this.auth.logout();
-    window.location.href = '/login';
+    window.location.href = '/';
   }
 }
