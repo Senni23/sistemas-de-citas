@@ -44,6 +44,14 @@ export class AuthService {
     localStorage.removeItem(this.storageKey);
   }
 
+  olvidePassword(email: string): Observable<{ mensaje: string }> {
+    return this.http.post<{ mensaje: string }>(`${this.baseUrl}/olvide-password`, { email });
+  }
+
+  restablecerPassword(token: string, passwordNueva: string): Observable<{ mensaje: string }> {
+    return this.http.post<{ mensaje: string }>(`${this.baseUrl}/restablecer-password`, { token, passwordNueva });
+  }
+
   usuarioActual(): SesionUsuario | null {
     const raw = localStorage.getItem(this.storageKey);
     return raw ? (JSON.parse(raw) as SesionUsuario) : null;

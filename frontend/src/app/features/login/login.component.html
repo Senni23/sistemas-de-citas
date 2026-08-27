@@ -2,8 +2,8 @@
   <div class="card auth-card shadow-sm" style="width: 380px;">
     <div class="card-body p-4">
       <div class="text-center mb-4">
-        <div class="mb-2" style="font-size: 2.2rem;"><i class="bi bi-activity text-gradient"></i></div>
-        <h4 class="card-title mb-1 text-gradient">Clinica Vitalis</h4>
+        <img src="assets/logo-medicenter.jpg" alt="MEDICENTER" style="height: 56px; width: auto; border-radius: 8px;" class="mb-2">
+        <h4 class="card-title mb-1 text-gradient">MEDICENTER</h4>
         <p class="text-secondary mb-0" style="font-size: 0.85rem;">Ingresa a tu panel de control</p>
       </div>
 
@@ -12,10 +12,19 @@
         <input class="form-control" [(ngModel)]="username" name="username" placeholder="Usuario o correo" />
       </div>
 
-      <div class="mb-3">
+      <div class="mb-2">
         <label class="form-label"><i class="bi bi-shield-lock me-1"></i>Contrasena</label>
-        <input type="password" class="form-control" [(ngModel)]="password" name="password" placeholder="••••••••" />
+        <div class="password-field">
+          <input [type]="mostrarPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="password" name="password" placeholder="••••••••" />
+          <button type="button" class="password-toggle" (click)="mostrarPassword = !mostrarPassword" [attr.aria-label]="mostrarPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'">
+            <i class="bi" [ngClass]="mostrarPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+        </div>
       </div>
+
+      <p class="text-end mb-3" style="font-size: 0.85rem;">
+        <a routerLink="/olvide-password" class="text-gradient" style="cursor: pointer; text-decoration: none;">¿Olvidaste tu contrasena?</a>
+      </p>
 
       <div class="alert alert-danger py-1" *ngIf="error">{{ error }}</div>
 

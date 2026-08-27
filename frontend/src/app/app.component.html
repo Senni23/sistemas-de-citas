@@ -1,6 +1,9 @@
 <nav class="navbar navbar-expand-lg" *ngIf="auth.estaAutenticado()">
   <div class="container-fluid">
-    <span class="navbar-brand"><i class="bi bi-activity me-2"></i>Clinica Vitalis</span>
+    <span class="navbar-brand d-flex align-items-center gap-2">
+      <img src="assets/logo-medicenter.jpg" alt="MEDICENTER">
+      MEDICENTER
+    </span>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto">
         <!-- Personal de la clinica -->
@@ -10,6 +13,7 @@
           <li class="nav-item"><a class="nav-link" routerLink="/medicos" routerLinkActive="active"><i class="bi bi-heart-pulse me-1"></i>Medicos</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/especialidades" routerLinkActive="active"><i class="bi bi-clipboard2-pulse me-1"></i>Especialidades</a></li>
           <li class="nav-item"><a class="nav-link" routerLink="/citas" routerLinkActive="active"><i class="bi bi-calendar2-check me-1"></i>Citas</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/farmacia" routerLinkActive="active"><i class="bi bi-capsule me-1"></i>Farmacia</a></li>
         </ng-container>
 
         <!-- Medico -->

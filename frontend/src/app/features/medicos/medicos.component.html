@@ -34,7 +34,12 @@
         </div>
         <div class="mb-2" *ngIf="!editando">
           <label class="form-label">Contrasena inicial</label>
-          <input type="password" class="form-control" [(ngModel)]="formulario.password" name="password" placeholder="Minimo 6 caracteres" />
+          <div class="password-field">
+            <input [type]="mostrarPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="formulario.password" name="password" placeholder="Minimo 6 caracteres" />
+            <button type="button" class="password-toggle" (click)="mostrarPassword = !mostrarPassword" [attr.aria-label]="mostrarPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'">
+              <i class="bi" [ngClass]="mostrarPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </button>
+          </div>
         </div>
         <div class="alert alert-danger py-1" *ngIf="error">{{ error }}</div>
         <button class="btn btn-primary me-2" (click)="guardar()">Guardar</button>

@@ -42,11 +42,21 @@
       <div class="row">
         <div class="col-md-6 mb-3">
           <label class="form-label"><i class="bi bi-shield-lock me-1"></i>Contrasena</label>
-          <input type="password" class="form-control" [(ngModel)]="formulario.password" name="password" placeholder="Minimo 6 caracteres" />
+          <div class="password-field">
+            <input [type]="mostrarPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="formulario.password" name="password" placeholder="Minimo 6 caracteres" />
+            <button type="button" class="password-toggle" (click)="mostrarPassword = !mostrarPassword" [attr.aria-label]="mostrarPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'">
+              <i class="bi" [ngClass]="mostrarPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </button>
+          </div>
         </div>
         <div class="col-md-6 mb-3">
           <label class="form-label">Confirmar contrasena</label>
-          <input type="password" class="form-control" [(ngModel)]="formulario.confirmarPassword" name="confirmarPassword" />
+          <div class="password-field">
+            <input [type]="mostrarConfirmarPassword ? 'text' : 'password'" class="form-control" [(ngModel)]="formulario.confirmarPassword" name="confirmarPassword" />
+            <button type="button" class="password-toggle" (click)="mostrarConfirmarPassword = !mostrarConfirmarPassword" [attr.aria-label]="mostrarConfirmarPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'">
+              <i class="bi" [ngClass]="mostrarConfirmarPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </button>
+          </div>
         </div>
       </div>
 

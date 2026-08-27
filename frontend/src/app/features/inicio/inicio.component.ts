@@ -32,7 +32,7 @@ export class InicioComponent implements OnInit {
     {
       nombre: 'Maria Fernanda Garcia Torres',
       iniciales: 'MG',
-      texto: 'Desde que empece a atenderme en Vitalis, agendar una cita es cuestion de minutos desde el celular. El personal es muy amable y puntual.',
+      texto: 'Desde que empece a atenderme en MEDICENTER, agendar una cita es cuestion de minutos desde el celular. El personal es muy amable y puntual.',
     },
     {
       nombre: 'Carlos Alberto Ramirez Quispe',

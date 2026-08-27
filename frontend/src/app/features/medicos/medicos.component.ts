@@ -17,6 +17,7 @@ export class MedicosComponent implements OnInit {
   especialidades: Especialidad[] = [];
   formulario: Partial<Medico> & { especialidadId?: number; password?: string } = this.formularioVacio();
   editando = false;
+  mostrarPassword = false;
 
   constructor(private medicoService: MedicoService, private especialidadService: EspecialidadService) {}
 

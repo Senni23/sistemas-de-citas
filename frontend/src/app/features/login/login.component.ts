@@ -14,6 +14,7 @@ export class LoginComponent {
   username = '';
   password = '';
   error = '';
+  mostrarPassword = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 

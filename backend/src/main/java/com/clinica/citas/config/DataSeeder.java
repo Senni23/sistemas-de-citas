@@ -24,16 +24,19 @@ public class DataSeeder implements CommandLineRunner {
     private final MedicoRepository medicoRepository;
     private final PacienteRepository pacienteRepository;
     private final ServicioRepository servicioRepository;
+    private final ProductoFarmaciaRepository productoFarmaciaRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataSeeder(UsuarioRepository usuarioRepository, EspecialidadRepository especialidadRepository,
                        MedicoRepository medicoRepository, PacienteRepository pacienteRepository,
-                       ServicioRepository servicioRepository, PasswordEncoder passwordEncoder) {
+                       ServicioRepository servicioRepository, ProductoFarmaciaRepository productoFarmaciaRepository,
+                       PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.especialidadRepository = especialidadRepository;
         this.medicoRepository = medicoRepository;
         this.pacienteRepository = pacienteRepository;
         this.servicioRepository = servicioRepository;
+        this.productoFarmaciaRepository = productoFarmaciaRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -45,6 +48,7 @@ public class DataSeeder implements CommandLineRunner {
         seedPacientes();
         seedMedicos();
         seedServicios();
+        seedFarmacia();
     }
 
     private void seedAdmin() {
@@ -227,6 +231,41 @@ public class DataSeeder implements CommandLineRunner {
             servicio.setDuracionEstimada((String) d[2]);
             servicio.setEspecialidad(especialidad);
             servicioRepository.save(servicio);
+        }
+    }
+
+    private void seedFarmacia() {
+        // {nombre, descripcion, stock, stockMinimo, unidadMedida, precioUnitario, fechaVencimiento(ISO, puede ser null)}
+        Object[][] datos = {
+                {"Paracetamol 500mg", "Analgesico y antipirético, caja x 100 tabletas", 40, 20, "caja", "8.50", "2027-06-30"},
+                {"Ibuprofeno 400mg", "Antiinflamatorio, caja x 100 tabletas", 35, 20, "caja", "9.80", "2027-03-15"},
+                {"Amoxicilina 500mg", "Antibiotico, caja x 100 capsulas", 15, 15, "caja", "22.00", "2026-11-20"},
+                {"Guantes de latex talla M", "Guantes de examen descartables, caja x 100 unidades", 25, 10, "caja", "18.00", null},
+                {"Jeringas 5ml", "Jeringas descartables con aguja, paquete x 100 unidades", 50, 25, "paquete", "35.00", null},
+                {"Gasas esteriles", "Gasas 10x10cm, paquete x 50 unidades", 8, 15, "paquete", "12.50", null},
+                {"Alcohol antiseptico 70%", "Frasco de 1 litro", 30, 10, "frasco", "6.00", "2027-09-01"},
+                {"Suero fisiologico 500ml", "Solucion salina para irrigacion", 20, 10, "unidad", "4.50", "2027-01-10"},
+                {"Mascarillas quirurgicas", "Caja x 50 unidades", 60, 20, "caja", "15.00", null},
+                {"Termometro digital", "Termometro digital de uso clinico", 12, 5, "unidad", "20.00", null},
+        };
+
+        for (Object[] d : datos) {
+            String nombre = (String) d[0];
+            boolean existe = productoFarmaciaRepository.findAll().stream()
+                    .anyMatch(p -> nombre.equals(p.getNombre()));
+            if (existe) {
+                continue;
+            }
+
+            ProductoFarmacia producto = new ProductoFarmacia();
+            producto.setNombre(nombre);
+            producto.setDescripcion((String) d[1]);
+            producto.setStock((Integer) d[2]);
+            producto.setStockMinimo((Integer) d[3]);
+            producto.setUnidadMedida((String) d[4]);
+            producto.setPrecioUnitario(new BigDecimal((String) d[5]));
+            producto.setFechaVencimiento(d[6] != null ? LocalDate.parse((String) d[6]) : null);
+            productoFarmaciaRepository.save(producto);
         }
     }
 }

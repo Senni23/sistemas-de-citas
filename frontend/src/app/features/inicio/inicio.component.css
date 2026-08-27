@@ -23,16 +23,37 @@
   padding: 0.9rem 1.5rem;
 }
 .inicio-logo {
+  display: flex;
+  align-items: center;
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--text-main);
 }
+.inicio-logo img {
+  height: 30px;
+  width: auto;
+  border-radius: 6px;
+}
 
 /* Hero */
 .inicio-hero {
+  position: relative;
+  overflow: hidden;
   padding: 4rem 0 3rem;
 }
+.inicio-hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 55%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(224, 33, 43, 0.14), rgba(224, 33, 43, 0) 70%);
+  pointer-events: none;
+}
 .inicio-hero-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 2.5rem;
@@ -196,7 +217,7 @@
 
 /* CTA final */
 .inicio-cta {
-  background: var(--brand-dark);
+  background: linear-gradient(120deg, var(--brand-dark), var(--brand) 60%, var(--brand-light));
   padding: 3.5rem 0;
 }
 

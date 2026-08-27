@@ -3,6 +3,8 @@ package com.clinica.citas.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -30,6 +32,12 @@ public class Usuario {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
+
+    @Column(name = "reset_token", length = 100)
+    private String resetToken;
+
+    @Column(name = "reset_token_expira")
+    private LocalDateTime resetTokenExpira;
 
     public Usuario() {
     }
@@ -80,5 +88,21 @@ public class Usuario {
 
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public LocalDateTime getResetTokenExpira() {
+        return resetTokenExpira;
+    }
+
+    public void setResetTokenExpira(LocalDateTime resetTokenExpira) {
+        this.resetTokenExpira = resetTokenExpira;
     }
 }

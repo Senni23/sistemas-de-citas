@@ -23,6 +23,8 @@ export class RegistroComponent {
   };
   error = '';
   cargando = false;
+  mostrarPassword = false;
+  mostrarConfirmarPassword = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
