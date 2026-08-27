@@ -194,7 +194,9 @@ h1, h2, h3, h4, h5, h6 {
   background: #ffffff !important;
   border-bottom: 1px solid var(--border);
 }
-.navbar-brand {
+.navbar-brand,
+.navbar-brand:hover,
+.navbar-brand:focus {
   font-weight: 700;
   color: var(--text-main);
 }

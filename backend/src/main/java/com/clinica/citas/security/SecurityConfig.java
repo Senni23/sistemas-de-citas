@@ -17,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -25,8 +26,8 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
 
-    @Value("${app.cors.allowed-origin}")
-    private String corsAllowedOrigin;
+    @Value("${app.cors.allowed-origins}")
+    private String corsAllowedOrigins;
 
     public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
@@ -76,8 +77,13 @@ public class SecurityConfig {
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
+        List<String> origenes = Arrays.stream(corsAllowedOrigins.split(","))
+                .map(String::trim)
+                .filter(origen -> !origen.isEmpty())
+                .toList();
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(corsAllowedOrigin));
+        configuration.setAllowedOrigins(origenes);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

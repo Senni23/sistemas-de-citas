@@ -21,6 +21,8 @@ services:
       context: ./backend
     container_name: citas-backend
     restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
