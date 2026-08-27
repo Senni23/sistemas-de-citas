@@ -1,0 +1,220 @@
+.inicio {
+  background: var(--bg-page);
+}
+
+.inicio-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Header */
+.inicio-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.inicio-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+}
+.inicio-logo {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+/* Hero */
+.inicio-hero {
+  padding: 4rem 0 3rem;
+}
+.inicio-hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+.inicio-badge {
+  display: inline-block;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+.inicio-titulo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+.inicio-subtitulo {
+  color: var(--text-dim);
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  max-width: 46ch;
+}
+
+/* "Fotos" ilustradas (no hay fotos reales, se usan iconos a proposito) */
+.inicio-photo-placeholder {
+  background: linear-gradient(135deg, var(--brand-soft), #ffffff);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand);
+  aspect-ratio: 4 / 3;
+}
+.inicio-hero-photo {
+  font-size: 5rem;
+}
+.inicio-photo-chica {
+  aspect-ratio: 16 / 10;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+/* Secciones */
+.inicio-seccion {
+  padding: 3.5rem 0;
+}
+.inicio-seccion-alterna {
+  background: #ffffff;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.inicio-eyebrow {
+  display: block;
+  color: var(--brand-dark);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+}
+.inicio-titulo-seccion {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.75rem;
+}
+.inicio-texto {
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.inicio-texto-centrado {
+  color: var(--text-dim);
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+.inicio-historia-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* Chips de especialidades */
+.inicio-grid-especialidades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+.inicio-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+.inicio-chip i {
+  color: var(--brand);
+}
+
+/* Tarjetas de instalaciones */
+.inicio-card-instalacion {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  height: 100%;
+}
+.inicio-card-titulo {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+.inicio-card-texto {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  margin-bottom: 0;
+}
+
+/* Testimonios */
+.inicio-card-testimonio {
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 100%;
+}
+.inicio-quote-icon {
+  font-size: 1.5rem;
+  color: var(--brand);
+  opacity: 0.5;
+}
+.inicio-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* CTA final */
+.inicio-cta {
+  background: var(--brand-dark);
+  padding: 3.5rem 0;
+}
+
+/* Footer */
+.inicio-footer {
+  background: #ffffff;
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .inicio-hero-grid,
+  .inicio-historia-grid {
+    grid-template-columns: 1fr;
+  }
+  .inicio-titulo {
+    font-size: 1.9rem;
+  }
+}

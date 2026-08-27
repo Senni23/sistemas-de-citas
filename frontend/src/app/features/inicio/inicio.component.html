@@ -1,0 +1,141 @@
+<div class="inicio">
+
+  <!-- Header publico -->
+  <header class="inicio-header">
+    <div class="inicio-container inicio-header-inner">
+      <span class="inicio-logo"><i class="bi bi-activity me-2"></i>Clinica Vitalis</span>
+      <nav class="d-flex align-items-center gap-2">
+        <a routerLink="/login" class="btn btn-secondary btn-sm">Iniciar sesion</a>
+        <a routerLink="/registro" class="btn btn-primary btn-sm">Soy paciente nuevo</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="inicio-hero">
+    <div class="inicio-container inicio-hero-grid">
+      <div>
+        <span class="inicio-badge">Salud accesible, rapida y humana</span>
+        <h1 class="inicio-titulo">Cuidamos de ti y tu familia, cuando lo necesitas</h1>
+        <p class="inicio-subtitulo">
+          En Clinica Vitalis agendar una cita toma minutos: elige tu especialidad, tu horario y confirma
+          tu pago en linea. Sin llamadas, sin filas.
+        </p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a routerLink="/registro" class="btn btn-primary btn-lg"><i class="bi bi-calendar2-plus me-2"></i>Agendar mi primera cita</a>
+          <a href="#instalaciones" class="btn btn-secondary btn-lg">Conoce la clinica</a>
+        </div>
+      </div>
+      <div class="inicio-hero-visual">
+        <div class="inicio-photo-placeholder inicio-hero-photo">
+          <i class="bi bi-hospital"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nuestra historia -->
+  <section class="inicio-seccion">
+    <div class="inicio-container inicio-historia-grid">
+      <div class="inicio-photo-placeholder">
+        <i class="bi bi-building"></i>
+      </div>
+      <div>
+        <span class="inicio-eyebrow">Nuestra historia</span>
+        <h2 class="inicio-titulo-seccion">Mas de una decada cuidando a la comunidad</h2>
+        <p class="inicio-texto">
+          Clinica Vitalis nacio en el 2015 con un solo consultorio de medicina general y la conviccion de
+          que la atencion medica de calidad no deberia ser un lujo. Con el tiempo fuimos sumando
+          especialidades, un laboratorio propio y un area de imagenologia, siempre manteniendo el mismo
+          trato cercano del primer dia.
+        </p>
+        <p class="inicio-texto">
+          Hoy contamos con 9 especialidades, personal medico y tecnico comprometido, y un sistema de citas
+          en linea pensado para que cuidar tu salud sea simple, rapido y transparente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Especialidades -->
+  <section class="inicio-seccion inicio-seccion-alterna">
+    <div class="inicio-container">
+      <div class="text-center mb-4">
+        <span class="inicio-eyebrow">Que atendemos</span>
+        <h2 class="inicio-titulo-seccion">Nuestras especialidades</h2>
+      </div>
+      <div class="inicio-grid-especialidades">
+        <div class="inicio-chip" *ngFor="let esp of especialidades">
+          <i class="bi" [ngClass]="esp.icono"></i>
+          <span>{{ esp.nombre }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instalaciones y equipos -->
+  <section class="inicio-seccion" id="instalaciones">
+    <div class="inicio-container">
+      <div class="text-center mb-4">
+        <span class="inicio-eyebrow">Nuestras instalaciones</span>
+        <h2 class="inicio-titulo-seccion">Equipos y espacios pensados para ti</h2>
+        <p class="inicio-texto-centrado">
+          Estas imagenes son ilustrativas, pero reflejan cada area con la que cuenta la clinica.
+        </p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4" *ngFor="let inst of instalaciones">
+          <div class="inicio-card-instalacion">
+            <div class="inicio-photo-placeholder inicio-photo-chica">
+              <i class="bi" [ngClass]="inst.icono"></i>
+            </div>
+            <h3 class="inicio-card-titulo">{{ inst.nombre }}</h3>
+            <p class="inicio-card-texto">{{ inst.descripcion }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonios -->
+  <section class="inicio-seccion inicio-seccion-alterna">
+    <div class="inicio-container">
+      <div class="text-center mb-4">
+        <span class="inicio-eyebrow">Historias de pacientes</span>
+        <h2 class="inicio-titulo-seccion">Lo que dicen quienes ya confian en nosotros</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4" *ngFor="let t of testimonios">
+          <div class="inicio-card-testimonio">
+            <i class="bi bi-quote inicio-quote-icon"></i>
+            <p class="inicio-card-texto">{{ t.texto }}</p>
+            <div class="d-flex align-items-center gap-2 mt-3">
+              <div class="inicio-avatar">{{ t.iniciales }}</div>
+              <span style="font-weight: 600; font-size: 0.9rem;">{{ t.nombre }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <section class="inicio-cta">
+    <div class="inicio-container text-center">
+      <h2 class="inicio-titulo-seccion" style="color: #fff;">Empieza a cuidar tu salud hoy</h2>
+      <p class="inicio-texto-centrado" style="color: rgba(255,255,255,0.85);">
+        Crea tu cuenta de paciente y agenda tu primera cita en menos de 5 minutos.
+      </p>
+      <a routerLink="/registro" class="btn btn-light btn-lg"><i class="bi bi-calendar2-plus me-2"></i>Crear mi cuenta gratis</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="inicio-footer">
+    <div class="inicio-container d-flex justify-content-between flex-wrap gap-3">
+      <span><i class="bi bi-activity me-2"></i>Clinica Vitalis</span>
+      <span class="text-secondary" style="font-size: 0.85rem;">Sistema de Gestion de Citas Medicas &middot; Proyecto academico</span>
+    </div>
+  </footer>
+
+</div>

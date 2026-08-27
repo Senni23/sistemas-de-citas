@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { adminGuard, medicoGuard, pacienteGuard } from './core/guards/auth.guard';
+import { InicioComponent } from './features/inicio/inicio.component';
 import { LoginComponent } from './features/login/login.component';
 import { RegistroComponent } from './features/registro/registro.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
@@ -29,6 +30,6 @@ export const routes: Routes = [
   { path: 'agendar', component: AgendarComponent, canActivate: [pacienteGuard] },
   { path: 'mis-citas', component: MisCitasComponent, canActivate: [pacienteGuard] },
 
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: 'dashboard' },
+  { path: '', component: InicioComponent },
+  { path: '**', redirectTo: '' },
 ];
