@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://citas-medicas-backend.onrender.com/api',
+  apiUrl: 'https://citas-medicas-backend-s2n8.onrender.com/api',
 };
