@@ -48,6 +48,36 @@ la agenda de otro medico, y ninguno de los dos puede entrar al panel de administ
 6. Portal del paciente: registro y asistente para agendar citas
 7. Portal del medico: agenda propia agrupada por fecha
 
+## Arquitectura del backend (Domain-Driven Design)
+
+El backend esta organizado en cuatro capas. Cada capa solo depende de las que estan "hacia adentro":
+`interfaces` → `application` → `domain` ← `infrastructure`.
+
+```
+backend/src/main/java/com/clinica/citas/
+├── domain/           # El negocio, sin Spring ni JPA
+│   ├── citas/        #   Cita (raiz de agregado), HorarioCita, PagoCita, DisponibilidadMedico, CitaRepository (contrato)
+│   ├── pacientes/    #   Paciente, Dni, PacienteRepository
+│   ├── medicos/      #   Medico, Colegiatura, MedicoRepository
+│   ├── catalogo/     #   Especialidad, Servicio y sus repositorios
+│   ├── identidad/    #   Usuario, Rol, PasswordHash, TokenRecuperacion, PasswordHasher (puerto)
+│   ├── farmacia/     #   ProductoFarmacia, Stock, ProductoFarmaciaRepository
+│   └── shared/       #   Dinero, NombrePersona, CorreoElectronico, excepciones del dominio
+├── application/      # Casos de uso (CQRS): comandos, consultas y handlers + vistas (DTO de salida)
+│   └── <contexto>/   #   command/ query/ handler/ view/   (ej. citas/handler/AgendarCitaHandler)
+├── infrastructure/   # Detalles tecnicos que implementan los contratos del dominio
+│   ├── persistence/  #   entity/ (JPA) · mapper/ · springdata/ · repository/ (implementan los contratos)
+│   ├── security/     #   JWT, BCrypt, Spring Security
+│   ├── email/        #   Envio de correo (SMTP)
+│   └── config/       #   Tomcat, reloj, servicios de dominio, DataSeeder
+└── interfaces/rest/  # Controladores REST, requests (entrada) y manejo de errores
+```
+
+- **Comandos** cambian datos (agendar, pagar, registrar...); **consultas** solo leen (listar, obtener...). Cada uno tiene su *handler*.
+- El **dominio** valida sus propias reglas (horario de atencion, cruce de horarios, token de recuperacion de 1 hora...).
+- Los agregados se referencian por **id** (`Cita` guarda `PacienteId`, `MedicoId`...), no por objeto.
+- La API REST mantiene las mismas rutas y el mismo formato JSON, asi que el frontend no cambia.
+
 ## Como ejecutar en local (desarrollo)
 
 ### Requisitos
