@@ -4,7 +4,7 @@ on:
   push:
     branches: ["**"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "master"]
 
 jobs:
   build-backend:
@@ -20,6 +20,6 @@ jobs:
           distribution: "temurin"
           cache: maven
 
-      - name: Compilar backend con Maven
+      - name: Compilar backend y ejecutar pruebas con Maven
         working-directory: ./backend
-        run: mvn -B clean package -DskipTests
+        run: mvn -B clean verify
