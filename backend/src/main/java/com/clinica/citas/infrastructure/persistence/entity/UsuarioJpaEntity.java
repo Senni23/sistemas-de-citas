@@ -26,11 +26,21 @@ public class UsuarioJpaEntity {
     @Column(nullable = false, length = 20)
     private Rol rol;
 
+    // Cada cuenta pertenece a lo sumo a un medico o a un paciente (relacion uno a uno). Se escribe por el id;
+    // la asociacion es de solo lectura (ver el comentario de CitaJpaEntity).
     @Column(name = "medico_id")
     private Long medicoId;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medico_id", insertable = false, updatable = false)
+    private MedicoJpaEntity medico;
+
     @Column(name = "paciente_id")
     private Long pacienteId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "paciente_id", insertable = false, updatable = false)
+    private PacienteJpaEntity paciente;
 
     @Column(name = "reset_token", length = 100)
     private String resetToken;
@@ -39,6 +49,14 @@ public class UsuarioJpaEntity {
     private LocalDateTime resetTokenExpira;
 
     public UsuarioJpaEntity() {
+    }
+
+    public MedicoJpaEntity getMedico() {
+        return medico;
+    }
+
+    public PacienteJpaEntity getPaciente() {
+        return paciente;
     }
 
     public Long getId() {

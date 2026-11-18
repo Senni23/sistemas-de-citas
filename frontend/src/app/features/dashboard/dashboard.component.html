@@ -30,3 +30,38 @@
     </div>
   </div>
 </div>
+
+<div class="row g-3 mt-1" *ngIf="resumen">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="mb-3">Citas por estado</h5>
+        <p class="text-secondary mb-0" *ngIf="resumen.citasPorEstado.length === 0">Todavia no hay citas.</p>
+        <table class="table mb-0" *ngIf="resumen.citasPorEstado.length > 0">
+          <tbody>
+            <tr *ngFor="let e of resumen.citasPorEstado">
+              <td><span class="badge" [ngClass]="claseDelEstado(e.estado)">{{ e.estado }}</span></td>
+              <td class="text-end fw-semibold">{{ e.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="mb-3">Citas activas por especialidad</h5>
+        <p class="text-secondary mb-0" *ngIf="resumen.citasPorEspecialidad.length === 0">Todavia no hay citas.</p>
+        <table class="table mb-0" *ngIf="resumen.citasPorEspecialidad.length > 0">
+          <tbody>
+            <tr *ngFor="let e of resumen.citasPorEspecialidad">
+              <td>{{ e.especialidad }}</td>
+              <td class="text-end fw-semibold">{{ e.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

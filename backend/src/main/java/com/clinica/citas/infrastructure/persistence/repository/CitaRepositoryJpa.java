@@ -5,10 +5,17 @@ import com.clinica.citas.domain.citas.CitaId;
 import com.clinica.citas.domain.citas.CitaRepository;
 import com.clinica.citas.domain.citas.EstadoCita;
 import com.clinica.citas.domain.citas.HorarioCita;
+import com.clinica.citas.domain.citas.OrdenDeCitas;
 import com.clinica.citas.domain.medicos.MedicoId;
 import com.clinica.citas.domain.pacientes.PacienteId;
+import com.clinica.citas.domain.shared.Pagina;
+import com.clinica.citas.domain.shared.SolicitudDePagina;
+import com.clinica.citas.infrastructure.persistence.entity.CitaJpaEntity;
 import com.clinica.citas.infrastructure.persistence.mapper.CitaMapper;
 import com.clinica.citas.infrastructure.persistence.springdata.CitaJpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -49,7 +56,26 @@ public class CitaRepositoryJpa implements CitaRepository {
 
     @Override
     public List<Cita> listarPorMedico(MedicoId medicoId) {
-        return jpa.findByMedicoId(medicoId.valor()).stream().map(mapper::toDomain).toList();
+        return jpa.agendaDelMedico(medicoId.valor(), Sort.by("fecha", "hora", "id")).stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public Pagina<Cita> buscarPagina(EstadoCita estado, OrdenDeCitas orden, boolean descendente, SolicitudDePagina solicitud) {
+        Page<CitaJpaEntity> pagina = jpa.buscar(estado,
+                PageRequest.of(solicitud.pagina(), solicitud.tamano(), ordenar(orden, descendente)));
+        return new Pagina<>(pagina.getContent().stream().map(mapper::toDomain).toList(),
+                solicitud.pagina(), solicitud.tamano(), pagina.getTotalElements());
+    }
+
+    /** Traduce el orden del dominio a campos de la entidad; siempre termina en el id para que el orden sea estable. */
+    private Sort ordenar(OrdenDeCitas orden, boolean descendente) {
+        Sort.Direction direccion = descendente ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort principal = switch (orden) {
+            case FECHA -> Sort.by(direccion, "fecha", "hora");
+            case ESTADO -> Sort.by(direccion, "estado");
+            case ID -> Sort.by(direccion, "id");
+        };
+        return orden == OrdenDeCitas.ID ? principal : principal.and(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Override
@@ -69,11 +95,7 @@ public class CitaRepositoryJpa implements CitaRepository {
 
     @Override
     public boolean existeCitaActiva(MedicoId medicoId, HorarioCita horario, CitaId excluir) {
-        if (excluir == null) {
-            return jpa.existsByMedicoIdAndFechaAndHoraAndEstadoNot(
-                    medicoId.valor(), horario.fecha(), horario.hora(), EstadoCita.CANCELADA);
-        }
-        return jpa.existsByMedicoIdAndFechaAndHoraAndEstadoNotAndIdNot(
-                medicoId.valor(), horario.fecha(), horario.hora(), EstadoCita.CANCELADA, excluir.valor());
+        return jpa.existeCruce(medicoId.valor(), horario.fecha(), horario.hora(), EstadoCita.CANCELADA,
+                excluir != null ? excluir.valor() : null);
     }
 }

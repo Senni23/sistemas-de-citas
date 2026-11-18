@@ -19,11 +19,22 @@ public class CitaJpaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // El dominio solo conoce los ids, y por eso cada llave foranea se escribe por su columna (pacienteId,
+    // medicoId, servicioId). Junto a cada una hay una asociacion @ManyToOne de solo lectura sobre la misma
+    // columna: sirve para que la base cree la llave foranea y para hacer JOIN en las consultas JPQL.
     @Column(name = "paciente_id", nullable = false)
     private Long pacienteId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "paciente_id", insertable = false, updatable = false)
+    private PacienteJpaEntity paciente;
+
     @Column(name = "medico_id", nullable = false)
     private Long medicoId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "medico_id", insertable = false, updatable = false)
+    private MedicoJpaEntity medico;
 
     @Column(nullable = false)
     private LocalDate fecha;
@@ -40,6 +51,10 @@ public class CitaJpaEntity {
 
     @Column(name = "servicio_id")
     private Long servicioId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "servicio_id", insertable = false, updatable = false)
+    private ServicioJpaEntity servicio;
 
     @Column(nullable = false)
     private boolean pagado;
@@ -70,6 +85,21 @@ public class CitaJpaEntity {
 
     public void setPacienteId(Long pacienteId) {
         this.pacienteId = pacienteId;
+    }
+
+    /** Asociacion de solo lectura, pensada para las consultas JPQL; para escribir se usa el id. */
+    public PacienteJpaEntity getPaciente() {
+        return paciente;
+    }
+
+    /** Asociacion de solo lectura, pensada para las consultas JPQL; para escribir se usa el id. */
+    public MedicoJpaEntity getMedico() {
+        return medico;
+    }
+
+    /** Asociacion de solo lectura, pensada para las consultas JPQL; para escribir se usa el id. */
+    public ServicioJpaEntity getServicio() {
+        return servicio;
     }
 
     public Long getMedicoId() {

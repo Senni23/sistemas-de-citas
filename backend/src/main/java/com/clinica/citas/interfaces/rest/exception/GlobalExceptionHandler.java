@@ -7,12 +7,14 @@ import com.clinica.citas.domain.identidad.TokenInvalidoException;
 import com.clinica.citas.domain.shared.DomainException;
 import com.clinica.citas.domain.shared.RecursoNoEncontradoException;
 import com.clinica.citas.domain.shared.RegistroDuplicadoException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -71,6 +73,24 @@ public class GlobalExceptionHandler {
                 .reduce((a, b) -> a + "; " + b)
                 .orElse("Datos invalidos");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body(mensaje, HttpStatus.BAD_REQUEST));
+    }
+
+    /**
+     * La base de datos rechazo la operacion por una llave foranea o un valor unico, por ejemplo al eliminar
+     * un paciente o un medico que todavia tiene citas.
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleIntegridadDeDatos(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body(
+                "No se puede completar la operacion: el registro tiene datos relacionados (por ejemplo citas) o repite un valor unico",
+                HttpStatus.CONFLICT));
+    }
+
+    /** Un parametro de la URL llego con un valor que no corresponde (por ejemplo orden=XYZ o un id que no es numero). */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, Object>> handleParametroInvalido(MethodArgumentTypeMismatchException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body(
+                "El parametro '" + ex.getName() + "' tiene un valor no permitido: " + ex.getValue(), HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

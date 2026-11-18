@@ -11,6 +11,7 @@ import com.clinica.citas.application.catalogo.view.EspecialidadView;
 import com.clinica.citas.interfaces.rest.request.EspecialidadRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,9 +47,9 @@ public class EspecialidadController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public EspecialidadView crear(@Valid @RequestBody EspecialidadRequest r) {
-        return crear.handle(new EspecialidadCommands.Crear(r.nombre(), r.descripcion()));
+    public ResponseEntity<EspecialidadView> crear(@Valid @RequestBody EspecialidadRequest r) {
+        EspecialidadView creada = crear.handle(new EspecialidadCommands.Crear(r.nombre(), r.descripcion()));
+        return RespuestasCreadas.creado(creada, creada.id());
     }
 
     @PutMapping("/{id}")

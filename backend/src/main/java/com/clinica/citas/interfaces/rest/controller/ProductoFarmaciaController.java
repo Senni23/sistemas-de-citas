@@ -11,6 +11,7 @@ import com.clinica.citas.application.farmacia.view.ProductoView;
 import com.clinica.citas.interfaces.rest.request.ProductoRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,10 +47,10 @@ public class ProductoFarmaciaController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ProductoView crear(@Valid @RequestBody ProductoRequest r) {
-        return registrar.handle(new FarmaciaCommands.RegistrarProducto(r.nombre(), r.descripcion(), r.stock(), r.stockMinimo(),
-                r.unidadMedida(), r.precioUnitario(), r.fechaVencimiento()));
+    public ResponseEntity<ProductoView> crear(@Valid @RequestBody ProductoRequest r) {
+        ProductoView creado = registrar.handle(new FarmaciaCommands.RegistrarProducto(r.nombre(), r.descripcion(), r.stock(),
+                r.stockMinimo(), r.unidadMedida(), r.precioUnitario(), r.fechaVencimiento()));
+        return RespuestasCreadas.creado(creado, creado.id());
     }
 
     @PutMapping("/{id}")

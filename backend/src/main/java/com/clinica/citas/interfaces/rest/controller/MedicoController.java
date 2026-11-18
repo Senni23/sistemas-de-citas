@@ -12,6 +12,7 @@ import com.clinica.citas.interfaces.rest.request.MedicoActualizarRequest;
 import com.clinica.citas.interfaces.rest.request.MedicoRegistroRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,10 +47,10 @@ public class MedicoController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public MedicoView crear(@Valid @RequestBody MedicoRegistroRequest r) {
-        return registrar.handle(new MedicoCommands.Registrar(r.nombres(), r.apellidos(), r.colegiatura(), r.telefono(),
-                r.email(), r.especialidadId(), r.password()));
+    public ResponseEntity<MedicoView> crear(@Valid @RequestBody MedicoRegistroRequest r) {
+        MedicoView creado = registrar.handle(new MedicoCommands.Registrar(r.nombres(), r.apellidos(), r.colegiatura(),
+                r.telefono(), r.email(), r.especialidadId(), r.password()));
+        return RespuestasCreadas.creado(creado, creado.id());
     }
 
     @PutMapping("/{id}")

@@ -8,7 +8,10 @@ import java.math.BigDecimal;
  * el dominio no conoce JPA, y un mapeador convierte entre los dos.
  */
 @Entity
-@Table(name = "servicios")
+@Table(name = "servicios",
+        // Un servicio no se repite dentro de la misma especialidad (la misma regla que valida el dominio).
+        uniqueConstraints = @UniqueConstraint(name = "uk_servicio_nombre_especialidad",
+                columnNames = {"nombre", "especialidad_id"}))
 public class ServicioJpaEntity {
 
     @Id
@@ -24,10 +27,19 @@ public class ServicioJpaEntity {
     @Column(name = "duracion_estimada", length = 100)
     private String duracionEstimada;
 
+    // Se escribe por el id; la asociacion de abajo es de solo lectura (ver el comentario de CitaJpaEntity).
     @Column(name = "especialidad_id", nullable = false)
     private Long especialidadId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "especialidad_id", insertable = false, updatable = false)
+    private EspecialidadJpaEntity especialidad;
+
     public ServicioJpaEntity() {
+    }
+
+    public EspecialidadJpaEntity getEspecialidad() {
+        return especialidad;
     }
 
     public Long getId() {

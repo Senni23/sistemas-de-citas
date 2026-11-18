@@ -11,6 +11,7 @@ import com.clinica.citas.application.pacientes.view.PacienteView;
 import com.clinica.citas.interfaces.rest.request.PacienteRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,10 +46,10 @@ public class PacienteController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public PacienteView crear(@Valid @RequestBody PacienteRequest r) {
-        return registrar.handle(new PacienteCommands.Registrar(r.nombres(), r.apellidos(), r.dni(), r.fechaNacimiento(),
-                r.telefono(), r.email(), r.direccion()));
+    public ResponseEntity<PacienteView> crear(@Valid @RequestBody PacienteRequest r) {
+        PacienteView creado = registrar.handle(new PacienteCommands.Registrar(r.nombres(), r.apellidos(), r.dni(),
+                r.fechaNacimiento(), r.telefono(), r.email(), r.direccion()));
+        return RespuestasCreadas.creado(creado, creado.id());
     }
 
     @PutMapping("/{id}")

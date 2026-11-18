@@ -2,6 +2,8 @@ package com.clinica.citas.domain.citas;
 
 import com.clinica.citas.domain.medicos.MedicoId;
 import com.clinica.citas.domain.pacientes.PacienteId;
+import com.clinica.citas.domain.shared.Pagina;
+import com.clinica.citas.domain.shared.SolicitudDePagina;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +20,15 @@ public interface CitaRepository {
 
     List<Cita> listarPorPaciente(PacienteId pacienteId);
 
+    /** Agenda del medico, ordenada por fecha y hora. */
     List<Cita> listarPorMedico(MedicoId medicoId);
+
+    /**
+     * Busca citas de a una pagina, con orden.
+     *
+     * @param estado si no es null, solo trae las citas en ese estado
+     */
+    Pagina<Cita> buscarPagina(EstadoCita estado, OrdenDeCitas orden, boolean descendente, SolicitudDePagina solicitud);
 
     void eliminar(CitaId id);
 

@@ -2,6 +2,8 @@ package com.clinica.citas.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entidad de persistencia (como se guarda en la tabla "pacientes"). Es distinta del objeto de dominio:
@@ -36,7 +38,15 @@ public class PacienteJpaEntity {
     @Column(length = 255)
     private String direccion;
 
+    /** Lado inverso de la relacion: las citas de este paciente. Solo para consultas; no se usa para guardar. */
+    @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
+    private List<CitaJpaEntity> citas = new ArrayList<>();
+
     public PacienteJpaEntity() {
+    }
+
+    public List<CitaJpaEntity> getCitas() {
+        return citas;
     }
 
     public Long getId() {

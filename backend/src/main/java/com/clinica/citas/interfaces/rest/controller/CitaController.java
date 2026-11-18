@@ -2,6 +2,7 @@ package com.clinica.citas.interfaces.rest.controller;
 
 import com.clinica.citas.application.citas.command.CitaCommands;
 import com.clinica.citas.application.citas.handler.AgendarCitaHandler;
+import com.clinica.citas.application.citas.handler.BuscarCitasHandler;
 import com.clinica.citas.application.citas.handler.CambiarEstadoCitaHandler;
 import com.clinica.citas.application.citas.handler.EliminarCitaHandler;
 import com.clinica.citas.application.citas.handler.ListarCitasHandler;
@@ -12,7 +13,9 @@ import com.clinica.citas.application.citas.handler.PagarCitaHandler;
 import com.clinica.citas.application.citas.handler.ReprogramarCitaHandler;
 import com.clinica.citas.application.citas.query.CitaQueries;
 import com.clinica.citas.application.citas.view.CitaView;
+import com.clinica.citas.application.shared.PaginaView;
 import com.clinica.citas.domain.citas.EstadoCita;
+import com.clinica.citas.domain.citas.OrdenDeCitas;
 import com.clinica.citas.domain.identidad.Rol;
 import com.clinica.citas.infrastructure.security.UsuarioPrincipal;
 import com.clinica.citas.interfaces.rest.request.CitaRequest;
@@ -20,6 +23,7 @@ import com.clinica.citas.interfaces.rest.request.EstadoRequest;
 import com.clinica.citas.interfaces.rest.request.PagoRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +42,7 @@ public class CitaController {
     private static final String METODO_DE_PAGO_POR_DEFECTO = "TARJETA_SIMULADA";
 
     private final ListarCitasHandler listar;
+    private final BuscarCitasHandler buscar;
     private final ObtenerCitaHandler obtener;
     private final ListarCitasPorPacienteHandler listarPorPaciente;
     private final ListarCitasPorMedicoHandler listarPorMedico;
@@ -47,11 +52,12 @@ public class CitaController {
     private final PagarCitaHandler pagar;
     private final EliminarCitaHandler eliminar;
 
-    public CitaController(ListarCitasHandler listar, ObtenerCitaHandler obtener, ListarCitasPorPacienteHandler listarPorPaciente,
-                          ListarCitasPorMedicoHandler listarPorMedico, AgendarCitaHandler agendar,
-                          ReprogramarCitaHandler reprogramar, CambiarEstadoCitaHandler cambiarEstado, PagarCitaHandler pagar,
-                          EliminarCitaHandler eliminar) {
+    public CitaController(ListarCitasHandler listar, BuscarCitasHandler buscar, ObtenerCitaHandler obtener,
+                          ListarCitasPorPacienteHandler listarPorPaciente, ListarCitasPorMedicoHandler listarPorMedico,
+                          AgendarCitaHandler agendar, ReprogramarCitaHandler reprogramar,
+                          CambiarEstadoCitaHandler cambiarEstado, PagarCitaHandler pagar, EliminarCitaHandler eliminar) {
         this.listar = listar;
+        this.buscar = buscar;
         this.obtener = obtener;
         this.listarPorPaciente = listarPorPaciente;
         this.listarPorMedico = listarPorMedico;
@@ -66,6 +72,22 @@ public class CitaController {
     public List<CitaView> listar(@AuthenticationPrincipal UsuarioPrincipal principal) {
         exigirPersonalClinica(principal);
         return listar.handle(new CitaQueries.ListarTodas());
+    }
+
+    /**
+     * Listado de a una pagina, para el personal de la clinica. Ejemplo:
+     * {@code GET /api/citas/buscar?estado=PENDIENTE&orden=FECHA&descendente=true&pagina=0&tamano=10}.
+     * Todos los parametros son opcionales; {@code orden} puede ser FECHA, ESTADO o ID.
+     */
+    @GetMapping("/buscar")
+    public PaginaView<CitaView> buscar(@RequestParam(required = false) EstadoCita estado,
+                                       @RequestParam(defaultValue = "FECHA") OrdenDeCitas orden,
+                                       @RequestParam(defaultValue = "false") boolean descendente,
+                                       @RequestParam(defaultValue = "0") int pagina,
+                                       @RequestParam(defaultValue = "10") int tamano,
+                                       @AuthenticationPrincipal UsuarioPrincipal principal) {
+        exigirPersonalClinica(principal);
+        return buscar.handle(new CitaQueries.Buscar(estado, orden, descendente, pagina, tamano));
     }
 
     @GetMapping("/{id}")
@@ -92,12 +114,12 @@ public class CitaController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CitaView crear(@Valid @RequestBody CitaRequest r, @AuthenticationPrincipal UsuarioPrincipal principal) {
+    public ResponseEntity<CitaView> crear(@Valid @RequestBody CitaRequest r, @AuthenticationPrincipal UsuarioPrincipal principal) {
         // Un paciente solo puede agendar citas para si mismo, sin importar lo que mande el formulario.
         Long pacienteId = esRol(principal, Rol.PACIENTE) ? principal.getPacienteId() : r.paciente().id();
         Long servicioId = r.servicio() != null ? r.servicio().id() : null;
-        return agendar.handle(new CitaCommands.Agendar(pacienteId, r.medico().id(), servicioId, r.fecha(), r.hora(), r.motivo()));
+        CitaView creada = agendar.handle(new CitaCommands.Agendar(pacienteId, r.medico().id(), servicioId, r.fecha(), r.hora(), r.motivo()));
+        return RespuestasCreadas.creado(creada, creada.id());
     }
 
     @PutMapping("/{id}")

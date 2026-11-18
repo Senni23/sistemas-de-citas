@@ -73,6 +73,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(origenes);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
+        // Sin esto, el navegador no deja que el frontend (otro origen) lea la cabecera Location de los 201 Created.
+        configuration.setExposedHeaders(List.of("Location"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -2,6 +2,9 @@ package com.clinica.citas.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Entidad de persistencia (como se guarda en la tabla "medicos"). Es distinta del objeto de dominio:
  * el dominio no conoce JPA, y un mapeador convierte entre los dos.
@@ -29,10 +32,27 @@ public class MedicoJpaEntity {
     @Column(length = 100, unique = true)
     private String email;
 
+    // Se escribe por el id; la asociacion de abajo es de solo lectura (ver el comentario de CitaJpaEntity).
     @Column(name = "especialidad_id", nullable = false)
     private Long especialidadId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "especialidad_id", insertable = false, updatable = false)
+    private EspecialidadJpaEntity especialidad;
+
+    /** Lado inverso de la relacion: las citas de este medico. Solo para consultas; no se usa para guardar. */
+    @OneToMany(mappedBy = "medico", fetch = FetchType.LAZY)
+    private List<CitaJpaEntity> citas = new ArrayList<>();
+
     public MedicoJpaEntity() {
+    }
+
+    public EspecialidadJpaEntity getEspecialidad() {
+        return especialidad;
+    }
+
+    public List<CitaJpaEntity> getCitas() {
+        return citas;
     }
 
     public Long getId() {
