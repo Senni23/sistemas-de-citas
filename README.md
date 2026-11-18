@@ -78,6 +78,25 @@ backend/src/main/java/com/clinica/citas/
 - Los agregados se referencian por **id** (`Cita` guarda `PacienteId`, `MedicoId`...), no por objeto.
 - La API REST mantiene las mismas rutas y el mismo formato JSON, asi que el frontend no cambia.
 
+### Persistencia con JPA y consultas
+
+- **Relaciones**: las entidades JPA declaran `@ManyToOne` (cita → paciente, medico y servicio; medico y servicio → especialidad), `@OneToOne` (usuario → medico o paciente) y `@OneToMany` en el lado inverso. Como el dominio solo conoce ids, el id se escribe por su columna y la asociacion es de **solo lectura** (`insertable = false, updatable = false`): asi MySQL crea y hace cumplir las llaves foraneas y las consultas pueden hacer JOIN.
+- **Restricciones**: `unique = true` en DNI, colegiatura y correo, y `@UniqueConstraint` para que un servicio no se repita en su especialidad.
+- **Consultas** (`CitaJpaRepository`): por nombre de metodo (`findBy…`, `countBy…`), JPQL con `@Query` y `@Param` (cruce de horarios, agenda del medico con `Sort`, busqueda con `Pageable`, reporte por especialidad con JOIN) y una consulta nativa en SQL (citas por estado).
+- **Paginacion sin depender de Spring Data**: el dominio define `Pagina` y `SolicitudDePagina`; la infraestructura los traduce a `Pageable`.
+- **Reportes** del tablero: el puerto `ReportesDeCitas` (aplicacion) lo implementa `ReportesDeCitasJpa` (infraestructura).
+
+### API REST: respuestas y paginacion
+
+- Los `POST` de creacion responden **201 Created** con la cabecera **`Location`** (por ejemplo `/api/citas/15`); CORS la deja expuesta para el frontend. Los `DELETE` responden 204.
+- `GET /api/citas/buscar` (solo personal de la clinica) lista de a una pagina. Parametros opcionales: `estado` (PENDIENTE, CONFIRMADA, ATENDIDA, CANCELADA), `orden` (FECHA, ESTADO o ID), `descendente` (true/false), `pagina` (desde 0) y `tamano` (1 a 100). Ejemplo: `/api/citas/buscar?estado=PENDIENTE&orden=FECHA&descendente=true&pagina=0&tamano=10`.
+- `GET /api/dashboard/resumen` incluye, ademas de los totales, `citasPorEstado` y `citasPorEspecialidad`.
+- Eliminar un paciente o un medico que todavia tiene citas responde **409** (lo impide la llave foranea).
+
+### Pruebas y cobertura
+
+`mvn clean verify` ejecuta las 145 pruebas (dominio, casos de uso, infraestructura sobre H2 e integracion de la API) y genera el reporte de cobertura de JaCoCo en `backend/target/site/jacoco/index.html` (87,5 % de lineas).
+
 ## Como ejecutar en local (desarrollo)
 
 ### Requisitos
