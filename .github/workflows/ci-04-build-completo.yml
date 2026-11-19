@@ -20,9 +20,9 @@ jobs:
           distribution: "temurin"
           cache: maven
 
-      - name: Compilar backend
+      - name: Compilar backend y ejecutar pruebas
         working-directory: ./backend
-        run: mvn -B clean package -DskipTests
+        run: mvn -B clean verify
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
